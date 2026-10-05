@@ -65,6 +65,7 @@ Implementation in `src/rasadtwin/utils/metadata.py` supports all required reprod
 | Severity | Finding | Evidence | Action |
 |---|---|---|---|
 | OK | `PHASE_0_REPORT.md` had ambiguous terminology regarding dependencies vs. network APIs. | "No external dependencies are active" was stated in the prior report. | Replaced the phrasing in the report with "No external cloud/API connections configured" to strictly reflect true state. |
+| RESOLVED | Project root lacked its own `.git` directory structure. | `git status` reported untracked files relative to a parent directory's repository. | Performed `git init` within the `RasadTwin_Governance_Pack` folder to isolate it properly and created baseline commit `9f72eb5a`. |
 
 ## 13. Remaining CTO Decisions
 - None required for P0. The foundation is robust, secure, tested, and structurally compliant. We are ready to proceed with actual implementations in P1 upon direction.

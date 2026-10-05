@@ -1,1 +1,153 @@
-# Placeholder config file for config/world.yaml
+# HimalayaSim — Synthetic World Configuration
+# All parameters are fictional and illustrative.
+# No real or classified military data.
+
+world:
+  name: "HimalayaSim"
+  description: "Fully synthetic logistics world for RasadTwin experiments"
+  history_days: 1095  # 3 years
+  test_days: 365      # 1 year rolling
+  quick_days: 90      # --quick mode
+  start_date: "2021-01-01"
+
+graph:
+  rear_depots: 2
+  intermediate_depots: 3
+  # n_posts is set via CLI --n-posts (8, 20, 50, 100)
+  forward_post_altitude_min_m: 3000
+  forward_post_altitude_max_m: 5500
+  rear_depot_altitude_m: 1200
+  intermediate_depot_altitude_m: 2200
+  # Fictional coordinate bounding box
+  x_min: 0.0
+  x_max: 200.0
+  y_min: 0.0
+  y_max: 150.0
+
+modes:
+  road:
+    speed_kmh: 25.0
+    capacity: 500.0
+    cost_per_km: 2.5
+    availability: 1.0
+  mule:
+    speed_kmh: 5.0
+    capacity: 50.0
+    cost_per_km: 8.0
+    availability: 0.9
+  heli:
+    speed_kmh: 150.0
+    capacity: 200.0
+    cost_per_km: 45.0
+    availability: 0.7
+    max_wind_kph: 50.0
+    min_visibility_km: 2.0
+  drone:
+    speed_kmh: 60.0
+    capacity: 20.0
+    cost_per_km: 15.0
+    availability: 0.8
+    max_wind_kph: 35.0
+
+items:
+  rations:
+    priority: 3
+    base_rate_per_troop: 2.5
+    unit: "kg"
+  POL:
+    priority: 3
+    base_rate_per_troop: 1.8
+    unit: "litre"
+  medical:
+    priority: 4
+    base_rate_per_troop: 0.3
+    unit: "kit"
+  spares:
+    priority: 1
+    base_rate_per_troop: 0.0
+    bernoulli_p: 0.15
+    nb_n: 2
+    nb_p: 0.4
+    unit: "unit"
+
+troops:
+  min_per_post: 30
+  max_per_post: 120
+
+weather:
+  base_temperature_c: 15.0
+  annual_amplitude_c: 20.0
+  lapse_rate_c_per_km: 6.5
+  reference_altitude_m: 0.0
+  snowfall_season_months: [11, 12, 1, 2, 3]
+  snowfall_base_mm: 0.0
+  snowfall_peak_mm: 40.0
+  snowfall_altitude_factor: 0.005
+  wind_base_kph: 10.0
+  wind_amplitude_kph: 15.0
+  wind_noise_std_kph: 5.0
+  visibility_clear_km: 15.0
+  visibility_snow_reduction_km_per_mm: 0.3
+  visibility_min_km: 0.5
+  temperature_noise_std_c: 3.0
+
+demand:
+  altitude_factor_per_km: 0.08
+  seasonal_amplitude: 0.15
+  winter_fuel_boost: 0.4
+  noise_std: 0.05
+  ops_plan_lookahead_days: 7
+  ops_plan_noise_std: 0.15
+
+tempo:
+  transition_matrix:
+    normal:   {normal: 0.92, elevated: 0.07, surge: 0.01}
+    elevated: {normal: 0.15, elevated: 0.75, surge: 0.10}
+    surge:    {normal: 0.05, elevated: 0.25, surge: 0.70}
+  multipliers:
+    normal: 1.0
+    elevated: 1.4
+    surge: 2.0
+
+disruptions:
+  road_closure:
+    base_probability: 0.02
+    snowfall_factor: 0.015
+    altitude_factor_per_km: 0.01
+    duration_mu: 1.5
+    duration_sigma: 0.8
+  landslide:
+    lambda_per_edge_per_year: 0.3
+    duration_mu: 2.0
+    duration_sigma: 1.0
+  heli_grounding:
+    wind_threshold_kph: 50.0
+    visibility_threshold_km: 2.0
+  drone_grounding:
+    wind_threshold_kph: 35.0
+
+inventory:
+  initial_stock_days: 15
+  replenishment_interval_days: 7
+  replenishment_fraction: 0.8
+  lead_time_days: 2
+
+scenarios:
+  S1:
+    name: "stationary"
+    description: "Normal baseline, no regime forcing"
+  S2:
+    name: "winter_surge"
+    description: "Extended winter with elevated demand"
+    force_tempo_months: [11, 12, 1, 2]
+    forced_tempo: "elevated"
+  S3:
+    name: "sudden_operational_surge"
+    description: "Mid-timeline tempo spike"
+    surge_start_day: 400
+    surge_duration_days: 60
+    forced_tempo: "surge"
+  S4:
+    name: "iot_dropout"
+    description: "Random missing stock observations"
+    dropout_probability: 0.15

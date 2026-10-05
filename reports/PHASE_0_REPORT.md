@@ -89,3 +89,10 @@ pip install -e ".[dev]"
 pytest
 ruff check .
 ```
+
+
+## 12. Final Closure (Git Reproducibility Baseline)
+- Initialized local Git repository at the project root `RasadTwin_Governance_Pack\rasadtwin_governance_pack`.
+- Generated and verified `requirements.lock`.
+- Created exactly one baseline commit: `9f72eb5a3193c8bd5d92bc0ef53d345f01d7ecf0` with the message `"chore: establish RasadTwin P0 foundation"`.
+- Verified the `metadata.py` utility successfully binds this commit hash to the `git_commit` reproducibility field, fully closing the P0 foundation gaps.

@@ -1,36 +1,46 @@
 import React from 'react';
-import { Activity, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Activity, Route, ShieldAlert, Package, Wifi } from 'lucide-react';
 
-export default function KPIBar({ posts, routes, whatIf, decision }: any) {
-  const fPosts = posts.filter((p:any) => p.type === 'forward_post');
-  const atRisk = fPosts.filter((p:any) => p.risk === 'High').length;
-  const watch = fPosts.filter((p:any) => p.dos < 7).length;
-
-  const disruptions = whatIf && !decision ? 1 : 0;
-  const pendingDecisions = whatIf && !decision ? 1 : 0;
+export default function KPIBar({ systemState, posts, routes, whatIf, decision }: any) {
+  const atRisk = posts.filter((p:any) => p.risk === 'High').length;
+  const pending = whatIf && !decision ? 1 : 0;
+  
+  const getSystemStateColor = () => {
+    switch (systemState) {
+      case 'NORMAL': return 'text-[#52b788]';
+      case 'DISRUPTION_DETECTED': return 'text-[#e63946]';
+      case 'HUMAN_REVIEW': return 'text-[#d4a373]';
+      case 'PLAN_UPDATED': return 'text-[#6D9FB3]';
+      default: return 'text-gray-400';
+    }
+  };
 
   return (
-    <div className="bg-[#0b0f0c] border border-[#2a362c] rounded flex items-center shrink-0">
-      <div className="flex-1 flex divide-x divide-[#2a362c]">
-        <div className="px-6 py-3 flex-1">
-          <div className="text-[9px] text-gray-500 uppercase tracking-widest font-bold mb-1">Forward Posts</div>
-          <div className="text-xl font-mono text-white">{fPosts.length}</div>
+    <div className="flex gap-2 shrink-0 mb-2">
+      <div className="bg-[#0b0f0c] border border-[#2a362c] rounded px-4 py-2 flex items-center justify-between w-64">
+        <div>
+          <div className="text-[9px] text-gray-500 font-bold tracking-widest uppercase">SYSTEM STATE</div>
+          <div className={`text-xs font-mono font-bold mt-1 ${getSystemStateColor()}`}>{systemState.replace('_', ' ')}</div>
         </div>
-        <div className="px-6 py-3 flex-1">
-          <div className="text-[9px] text-[#e63946] uppercase tracking-widest font-bold mb-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3"/> At Risk</div>
-          <div className="text-xl font-mono text-[#e63946]">{atRisk}</div>
+        <Activity className={`w-5 h-5 ${getSystemStateColor()}`} />
+      </div>
+      
+      <div className="flex-1 grid grid-cols-4 gap-2">
+        <div className="bg-[#0b0f0c] border border-[#2a362c] rounded px-4 py-2 flex items-center justify-between">
+          <div><div className="text-[9px] text-gray-500 font-bold tracking-widest uppercase">Active Posts</div><div className="text-sm font-mono text-white mt-1">{posts.length}</div></div>
+          <Package className="w-4 h-4 text-gray-600" />
         </div>
-        <div className="px-6 py-3 flex-1">
-          <div className="text-[9px] text-[#d4a373] uppercase tracking-widest font-bold mb-1">Stock-out Watch</div>
-          <div className="text-xl font-mono text-[#d4a373]">{watch}</div>
+        <div className="bg-[#0b0f0c] border border-[#2a362c] rounded px-4 py-2 flex items-center justify-between">
+          <div><div className="text-[9px] text-[#e63946] font-bold tracking-widest uppercase">At Risk</div><div className="text-sm font-mono text-[#e63946] mt-1">{atRisk}</div></div>
+          <ShieldAlert className="w-4 h-4 text-[#e63946]" />
         </div>
-        <div className="px-6 py-3 flex-1 bg-[#131915]">
-          <div className="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-1">Disruptions</div>
-          <div className={`text-xl font-mono ${disruptions > 0 ? 'text-[#e63946]' : 'text-white'}`}>{disruptions}</div>
+        <div className="bg-[#0b0f0c] border border-[#2a362c] rounded px-4 py-2 flex items-center justify-between">
+          <div><div className="text-[9px] text-gray-500 font-bold tracking-widest uppercase">Active Routes</div><div className="text-sm font-mono text-white mt-1">{routes.length}</div></div>
+          <Route className="w-4 h-4 text-gray-600" />
         </div>
-        <div className={`px-6 py-3 flex-1 transition-colors ${pendingDecisions > 0 ? 'bg-[#d4a373]/10 border-b-2 border-[#d4a373]' : ''}`}>
-          <div className="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-1">Decisions Pending</div>
-          <div className={`text-xl font-mono ${pendingDecisions > 0 ? 'text-[#d4a373]' : 'text-white'}`}>{pendingDecisions}</div>
+        <div className="bg-[#0b0f0c] border border-[#d4a373]/30 rounded px-4 py-2 flex items-center justify-between">
+          <div><div className="text-[9px] text-[#d4a373] font-bold tracking-widest uppercase">Decisions Pending</div><div className="text-sm font-mono text-[#d4a373] mt-1">{pending}</div></div>
+          <Activity className="w-4 h-4 text-[#d4a373]" />
         </div>
       </div>
     </div>

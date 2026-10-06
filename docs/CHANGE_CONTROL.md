@@ -1,34 +1,22 @@
-# RasadTwin Change Control
+# CHANGE CONTROL POLICY
 
-## Protected changes
+**WHEN AN ADR IS REQUIRED:**
+- Introducing a new database engine or framework.
+- Altering the security, offline, or data governance paradigms.
+- Changing the primary architecture layer boundaries.
 
-The following require explicit human authorization:
-- problem interpretation;
-- hypothesis wording;
-- primary/secondary metrics;
-- baselines;
-- statistical tests;
-- tuning protocol;
-- test-set policy;
-- data classification policy;
-- security policy;
-- model family changes that alter experiment meaning;
-- routing objective or priority weights when they affect comparability;
-- disruption/re-optimization definitions;
-- result schema used by reports or figures.
+**WHEN AN API CHANGE IS REQUIRED:**
+- API contracts must be documented in OpenAPI/Swagger before breaking endpoints.
+- Breaking changes require versioning or explicit coordination with UI updates.
 
-## Required change record
+**WHEN A SCHEMA MIGRATION IS REQUIRED:**
+- Any change to the PostgreSQL/SQLite relational structure must be captured in a migration script (e.g., Alembic). Do not manually alter tables in production.
 
-For an approved change, append to `docs/CHANGELOG.md`:
-- Date/time
-- Human approver
-- Files changed
-- Before
-- After
-- Reason
-- Impact on prior results
-- Whether affected experiments must be rerun
+**WHEN A DATASET PROVENANCE ENTRY IS REQUIRED:**
+- The moment any new real public data (OSM, SRTM, Weather) or synthetic scenario dataset is ingested.
 
-## No silent migration
+**WHEN EXPERIMENT PREREGISTRATION MUST REMAIN UNTOUCHED:**
+- Always. E1 and other completed research artifacts are locked. Modifying them invalidates the research integrity.
 
-Do not overwrite old experimental data when a definition changes. Create a new run/config/schema version.
+**WHEN A UI-ONLY CHANGE IS ACCEPTABLE:**
+- Visual layout adjustments, Tailwind class modifications, or client-side filtering changes that do not alter the underlying business logic or data payload structure.

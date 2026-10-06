@@ -1,25 +1,40 @@
 import React from 'react';
-import { ListTodo } from 'lucide-react';
 
 export default function AuditView({ audits }: any) {
   return (
-    <div className="flex-1 bg-[#0b0f0c] border border-[#2a362c] rounded p-4 overflow-y-auto custom-scrollbar">
-      <h2 className="text-sm font-bold tracking-widest text-white uppercase mb-4 flex items-center gap-2"><ListTodo className="w-4 h-4 text-[#d4a373]" /> FULL AUDIT TIMELINE</h2>
-      {audits.length === 0 ? (
-        <div className="text-gray-500 text-xs text-center py-8 border border-dashed border-[#2a362c] rounded">No audit events yet. Perform actions in the COMMAND view.</div>
-      ) : (
-        <div className="space-y-1 font-mono text-[10px]">
-          {audits.map((a:any, i:number) => (
-            <div key={i} className={`flex gap-3 px-2 py-1.5 rounded ${a.user === 'COMMANDER' ? 'bg-[#1c231e] text-white' : 'text-gray-400'}`}>
-              <span className={a.user === 'COMMANDER' ? 'text-[#52b788]' : 'text-[#d4a373]'}>▶</span>
-              <span className="w-36 text-gray-500 shrink-0">{new Date(a.timestamp).toLocaleString()}</span>
-              <span className={`w-20 shrink-0 ${a.user === 'COMMANDER' ? 'text-[#457b9d]' : 'text-gray-500'}`}>{a.user}</span>
-              <span className="w-24 shrink-0 text-white">{a.action}</span>
-              <span className="truncate">{a.decision} — {a.scenario}</span>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="h-full bg-[#0b0f0c] border border-[#2a362c] rounded flex flex-col overflow-hidden">
+      <div className="p-4 border-b border-[#2a362c] flex justify-between items-center bg-[#131915]">
+        <h2 className="text-sm font-bold tracking-widest text-white uppercase">SYSTEM AUDIT LEDGER</h2>
+      </div>
+      <div className="flex-1 overflow-auto p-4 custom-scrollbar">
+        <table className="w-full text-left text-xs">
+          <thead>
+            <tr className="text-gray-500 border-b border-[#2a362c]">
+              <th className="pb-2 font-normal uppercase tracking-wider">Timestamp</th>
+              <th className="pb-2 font-normal uppercase tracking-wider">Actor</th>
+              <th className="pb-2 font-normal uppercase tracking-wider">Event</th>
+              <th className="pb-2 font-normal uppercase tracking-wider">Scenario</th>
+              <th className="pb-2 font-normal uppercase tracking-wider">Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            {audits.map((a:any, i:number) => (
+              <tr key={i} className="border-b border-[#1c231e] hover:bg-[#1c231e]/50">
+                <td className="py-2 font-mono text-gray-400 whitespace-nowrap">{new Date(a.timestamp).toLocaleString()}</td>
+                <td className={`py-2 ${a.user === 'COMMANDER' ? 'text-[#457b9d] font-bold' : 'text-gray-500'}`}>{a.user}</td>
+                <td className="py-2 font-mono text-white">{a.action}</td>
+                <td className="py-2 text-gray-400">{a.scenario || '-'}</td>
+                <td className="py-2 text-gray-300">
+                  {a.user_action === 'APPROVE' ? `APPROVED ${a.selected_scope}` : 
+                   a.user_action === 'REJECT' ? `REJECTED -> PLAN RETAINED` :
+                   a.user_action === 'OVERRIDE' ? `OVERRIDE -> ${a.selected_scope}` :
+                   a.reason || '-'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

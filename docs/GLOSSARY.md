@@ -1,0 +1,21 @@
+# RASADTWIN GLOSSARY
+
+- **Digital Twin**: A virtual representation of the physical logistics network, updated dynamically to reflect inventory, routes, and environmental constraints.
+- **Forward Post**: A frontline sink node consuming inventory.
+- **Depot**: A rear source node with theoretically infinite or massive supply.
+- **Intermediate Hub**: A buffer node facilitating transfer between Depots and Forward Posts.
+- **Demand**: The rate at which inventory is consumed at a node.
+- **Days of Supply (DoS)**: A metric defining how long current inventory will last based on forecasted demand.
+- **Stock-out Risk**: The probability that a node will reach 0 inventory before replenishment arrives.
+- **Robust ETA**: The worst-case estimated time of arrival factoring in weather/terrain friction.
+- **Disruption**: A specific hazard (e.g., Road Closure, Heavy Snow) impacting network traversability.
+- **Impact Score**: A numerical value (0-100) scoring the severity of a disruption's cascading effects.
+- **PRESERVE**: A system recommendation meaning the disruption is minor; no replanning needed.
+- **LOCAL**: A system recommendation meaning the disruption impacts a localized area; alternative local routes should be used.
+- **GLOBAL**: A system recommendation meaning the network is severely compromised; full re-optimization is required.
+- **HITL (Human-in-the-Loop)**: A governance checkpoint requiring a human commander to authorize changes proposed by the AI.
+- **Edge**: The local computing environment at a Forward Post or disconnected terminal.
+- **Air-gapped**: A system physically isolated from unsecured networks, requiring offline capabilities.
+- **RAG**: Retrieval-Augmented Generation. Used to query SOPs or manuals.
+- **pgvector**: A PostgreSQL extension for storing and querying vector embeddings.
+- **Synthetic Logistics State**: Fictionalized operational data (nodes, inventory, demand) used safely in place of real military data.
